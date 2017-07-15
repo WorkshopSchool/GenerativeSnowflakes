@@ -21,25 +21,12 @@ void setup() {
     for (int j = 0; j < rows; j++) {
       // Initialize each object
       snowflake[i][j] = new Snowflake(i, j);
-      
     }
   }
 }
 
 void draw() {
-  background(MAXCOLOR, MAXCOLOR, MAXCOLOR);
-  translate(150,150);
-  for (int i = 0; i < cols; i++) {    
-    for (int j = 0; j < rows; j++) {
-      //display each object
-      pushMatrix();
-      translate(i*250, j*250);
-      
-      snowflake[i][j].flake();
-      popMatrix();
-    }
-  }
-  //stop();
+  translate(150, 150);
 }
 
 class Snowflake {
@@ -62,7 +49,6 @@ class Snowflake {
   Snowflake(float tempX, float tempY) {
     x= tempX;
     y= tempY;
-
   }
 
 
@@ -81,13 +67,14 @@ class Snowflake {
       rotate(radians(CIRCLE/NBRANCHES));
     }
     //draw the eyelet at the top
+
     ellipse(0, 0, 0.25*SIZE, 0.25*SIZE);
     ellipse(x+SIZE, 0, 0.25*SIZE, 0.25*SIZE);
   }
   //this function creates one of the six branches
   void branch(int size, int depth) {
     if (depth<DEPTH) {
-      line(0, 0, size,0);
+      line(0, 0, size, 0);
       //each recursive branch calls "branch" four times until DEPTH is reached
       branch(int(fractions[depth]*size), depth+1);
       //the matrix stack is an important concept in Processing
@@ -110,8 +97,19 @@ class Snowflake {
 
 //make a new snowflake with each mouse click, and save the old one
 void mouseClicked() {
+  background(MAXCOLOR, MAXCOLOR, MAXCOLOR);
   if (mouseButton == LEFT) {
-    // save("snowflake" + saves + ".png");
-    // saves = saves + 1;
+    for (int i = 0; i < cols; i++) {    
+      for (int j = 0; j < rows; j++) {
+        //display each object
+        pushMatrix();
+        translate(i*250, j*250);
+
+        snowflake[i][j].flake();
+        popMatrix();
+      }
+    }
+    save("snowflake" + saves + ".png");
+    saves = saves + 1;
   }
 }
