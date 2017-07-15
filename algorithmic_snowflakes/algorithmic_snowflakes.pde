@@ -67,6 +67,7 @@ class Snowflake {
 
 
   void flake() {
+    rotate(radians(-90));
     //generate three random branch positions and three random angles
     for (int i = 0; i<DEPTH; i++) {  
       // branch off at halfway, plus or minus a quarter of the way
