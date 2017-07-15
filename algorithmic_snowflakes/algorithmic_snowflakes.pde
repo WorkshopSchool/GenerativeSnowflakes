@@ -5,11 +5,12 @@ int THICKNESS = 6;
 // this variable tracks how many snowflakes we have saved in this session
 int saves = 0;
 
-int cols = 1;
-int rows = 5;
+int cols = 7;
+int rows = 4;
 
 void setup() {
-  size(1175, 400);
+  size(1890, 1200);
+  frameRate(6);
   stroke(0, 0, 0);
   strokeWeight(THICKNESS);
   fill(MAXCOLOR, MAXCOLOR, MAXCOLOR);
@@ -19,11 +20,27 @@ void setup() {
   for (int i = 0; i < cols; i++) {
     for (int j = 0; j < rows; j++) {
       // Initialize each object
-      snowflake[i][j] = new Snowflake(i*250, j*250);
+      snowflake[i][j] = new Snowflake(i, j);
+      
     }
   }
 }
 
+void draw() {
+  background(MAXCOLOR, MAXCOLOR, MAXCOLOR);
+  translate(150,150);
+  for (int i = 0; i < cols; i++) {    
+    for (int j = 0; j < rows; j++) {
+      //display each object
+      pushMatrix();
+      translate(i*250, j*250);
+      
+      snowflake[i][j].flake();
+      popMatrix();
+    }
+  }
+  //stop();
+}
 
 class Snowflake {
 
@@ -33,7 +50,7 @@ class Snowflake {
   // how many branches do the snowflakes have?
   int NBRANCHES = 6;
   // how big are the snowflakes, in pixels?
-  int SIZE = 50;
+  int SIZE = 85;
   // how many levels of branches do our snowflakes have?
   int DEPTH = 3;
   // how thick do we draw the lin12?
@@ -45,16 +62,11 @@ class Snowflake {
   Snowflake(float tempX, float tempY) {
     x= tempX;
     y= tempY;
+
   }
 
 
   void flake() {
-    //set background color
-    //background(MAXCOLOR,MAXCOLOR,MAXCOLOR);
-    //move the origin to the center of the canvas
-
-    //rotate the canvas so the zero-direction is up
-    //rotate(radians(-CIRCLE/4));
     //generate three random branch positions and three random angles
     for (int i = 0; i<DEPTH; i++) {  
       // branch off at halfway, plus or minus a quarter of the way
@@ -69,12 +81,12 @@ class Snowflake {
     }
     //draw the eyelet at the top
     ellipse(0, 0, 0.25*SIZE, 0.25*SIZE);
-    ellipse(SIZE, 0, 0.25*SIZE, 0.25*SIZE);
+    ellipse(x+SIZE, 0, 0.25*SIZE, 0.25*SIZE);
   }
   //this function creates one of the six branches
   void branch(int size, int depth) {
     if (depth<DEPTH) {
-      line(0, 0, size, 0);
+      line(0, 0, size,0);
       //each recursive branch calls "branch" four times until DEPTH is reached
       branch(int(fractions[depth]*size), depth+1);
       //the matrix stack is an important concept in Processing
@@ -100,17 +112,5 @@ void mouseClicked() {
   if (mouseButton == LEFT) {
     // save("snowflake" + saves + ".png");
     // saves = saves + 1;
-  }
-}
-
-void draw() {
-  background(MAXCOLOR, MAXCOLOR, MAXCOLOR);
-  //translate(200, 200);
-  for (int i = 0; i < cols; i++) {
-    for (int j = 0; j < rows; j++) {
-      //display each object
-      translate(0, j*275);
-      snowflake[i][j].flake();
-    }
   }
 }
